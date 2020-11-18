@@ -23,7 +23,7 @@ namespace VCSprojektas.Page
         {
             _driver = webDriver;
         }
-        //Single check box 
+        
         public void ClickCheckBox()
         {
             checkboxclick.Click();           
@@ -39,10 +39,9 @@ namespace VCSprojektas.Page
             WaitForResultBox();
             Assert.IsTrue(checkBoxResult.Text.Contains(expectedResult), $"Result is not the same, expented {expectedResult}, but was {checkBoxResult.Text}");
         }
-        //Baigiasi single checkBox
+       
 
 
-        //Multiple checkbox 
         public void ClickMultipleCheckBox()
         {
             foreach (IWebElement element in multipleCheckboxList)
@@ -55,7 +54,7 @@ namespace VCSprojektas.Page
         {
             Assert.AreEqual(expectedMultiCheckBoxResult ,multipleCheckBoxResult.GetAttribute("Value"),  $"Result is not the same, expented {expectedMultiCheckBoxResult}, but was {multipleCheckBoxResult.Text}");
         }
-        //Baigiasi multiple checkbox
+      
 
 
     }

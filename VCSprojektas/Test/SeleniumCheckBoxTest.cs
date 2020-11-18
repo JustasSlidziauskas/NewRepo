@@ -21,7 +21,7 @@ namespace VCSprojektas.Test
             _driver.Navigate().GoToUrl("https://www.seleniumeasy.com/test/basic-checkbox-demo.html");
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             _driver.Manage().Window.Maximize();
-            //_driver.FindElement(By.Id("cookiescript_reject")).Click(); jeigu bus cookies 
+          
         }
 
         [OneTimeTearDown]
