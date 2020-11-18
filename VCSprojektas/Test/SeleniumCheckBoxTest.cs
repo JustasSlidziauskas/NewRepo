@@ -39,6 +39,14 @@ namespace VCSprojektas.Test
             page.CheckResult("checked");
         }
 
+        [Test]
+        public void TestSeleniumMultiCechkBox()
+        {
+            SeleniumCheckBoxPage page = new SeleniumCheckBoxPage(_driver);
+
+            page.ClickMultipleCheckBox();
+            page.MultipleCheckBoxResult("Uncheck All");
+        }
 
 
 

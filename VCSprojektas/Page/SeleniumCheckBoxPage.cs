@@ -16,13 +16,14 @@ namespace VCSprojektas.Page
         private static IWebDriver _driver;
         private IWebElement checkboxclick => _driver.FindElement(By.Id("isAgeSelected"));
         private IWebElement checkBoxResult => _driver.FindElement(By.Id("txtAge"));
-
+         IReadOnlyCollection<IWebElement> multipleCheckboxList => _driver.FindElements(By.CssSelector(".cb1-element"));
+        private IWebElement multipleCheckBoxResult => _driver.FindElement(By.Id("check1"));
 
         public SeleniumCheckBoxPage(IWebDriver webDriver)
         {
             _driver = webDriver;
         }
-
+        //Single check box 
         public void ClickCheckBox()
         {
             checkboxclick.Click();           
@@ -38,6 +39,24 @@ namespace VCSprojektas.Page
             WaitForResultBox();
             Assert.IsTrue(checkBoxResult.Text.Contains(expectedResult), $"Result is not the same, expented {expectedResult}, but was {checkBoxResult.Text}");
         }
+        //Baigiasi single checkBox
+
+
+        //Multiple checkbox 
+        public void ClickMultipleCheckBox()
+        {
+            foreach (IWebElement element in multipleCheckboxList)
+            {
+                element.Click();
+
+            }
+        }
+        public void MultipleCheckBoxResult(string expectedMultiCheckBoxResult)
+        {
+            Assert.AreEqual(expectedMultiCheckBoxResult ,multipleCheckBoxResult.GetAttribute("Value"),  $"Result is not the same, expented {expectedMultiCheckBoxResult}, but was {multipleCheckBoxResult.Text}");
+        }
+        //Baigiasi multiple checkbox
+
 
     }
 }
