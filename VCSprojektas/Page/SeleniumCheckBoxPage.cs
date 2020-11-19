@@ -1,61 +1,82 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using VCSprojektas.Page;
 
-namespace VCSprojektas.Page
+namespace VCSproject.Page
 {
-    public class SeleniumCheckBoxPage 
+    public class CheckboxDemoPage : BasePage
     {
+        private const string PageAddress = "https://www.seleniumeasy.com/test/basic-checkbox-demo.html";
+        private const string TextToCheck = "Success - Check box is checked";
+        private IWebElement SingleCheckbox => Driver.FindElement(By.Id("isAgeSelected"));
+        private IWebElement Text => Driver.FindElement(By.Id("txtAge"));
+        private IReadOnlyCollection<IWebElement> MultipleCheckboxList => Driver.FindElements(By.CssSelector(".cb1-element"));
+        private IWebElement Button => Driver.FindElement(By.Id("check1"));
 
-        private static IWebDriver _driver;
-        private IWebElement checkboxclick => _driver.FindElement(By.Id("isAgeSelected"));
-        private IWebElement checkBoxResult => _driver.FindElement(By.Id("txtAge"));
-         IReadOnlyCollection<IWebElement> multipleCheckboxList => _driver.FindElements(By.CssSelector(".cb1-element"));
-        private IWebElement multipleCheckBoxResult => _driver.FindElement(By.Id("check1"));
-
-        public SeleniumCheckBoxPage(IWebDriver webDriver)
+        public CheckboxDemoPage(IWebDriver webdriver) : base(webdriver)
         {
-            _driver = webDriver;
-        }
-        
-        public void ClickCheckBox()
-        {
-            checkboxclick.Click();           
-        }
-        private void WaitForResultBox()
-        {
-            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            wait.Until(d => checkBoxResult.Displayed);
+            Driver.Url = PageAddress;
         }
 
-        public void CheckResult(string expectedResult)
+        public CheckboxDemoPage CheckSingleCheckbox()
         {
-            WaitForResultBox();
-            Assert.IsTrue(checkBoxResult.Text.Contains(expectedResult), $"Result is not the same, expented {expectedResult}, but was {checkBoxResult.Text}");
+            if (!SingleCheckbox.Selected)
+                SingleCheckbox.Click();
+            return this;
         }
-       
 
-
-        public void ClickMultipleCheckBox()
+        public CheckboxDemoPage CheckResult()
         {
-            foreach (IWebElement element in multipleCheckboxList)
+            Assert.IsTrue(Text.Text.Equals(TextToCheck));
+            return this;
+        }
+
+        private void UncheckFirstBlockCheckbox()
+        {
+            if (SingleCheckbox.Selected)
+                SingleCheckbox.Click();
+        }
+
+        public CheckboxDemoPage CheckAllCheckboxes()
+        {
+            UncheckFirstBlockCheckbox();
+            foreach (IWebElement element in MultipleCheckboxList)
             {
-                element.Click();
-
+                if (!element.Selected)
+                    element.Click();
             }
+            return this;
         }
-        public void MultipleCheckBoxResult(string expectedMultiCheckBoxResult)
+
+        public CheckboxDemoPage CheckButtonValue(string value)
         {
-            Assert.AreEqual(expectedMultiCheckBoxResult ,multipleCheckBoxResult.GetAttribute("Value"),  $"Result is not the same, expented {expectedMultiCheckBoxResult}, but was {multipleCheckBoxResult.Text}");
+            GetWait(3).Until(ExpectedConditions.TextToBePresentInElementValue(Button, "Uncheck All"));
+            Assert.IsTrue(Button.GetAttribute("value").Equals(value), "Seconds are wrong");
+            return this;
         }
-      
 
+        public CheckboxDemoPage ClickButton()
+        {
+            Button.Click();
+            return this;
+        }
 
+        public CheckboxDemoPage VerifyThatAllCheckboxesAreUnchecked()
+        {
+            foreach (IWebElement element in MultipleCheckboxList)
+            {
+                Assert.False(element.Selected, "Checkbox is still checked");
+                Assert.IsTrue(!element.Selected, "Checkbox is still checked");
+                Assert.That(!element.Selected, "Checkbox is still checked");
+            }
+            return this;
+        }
     }
 }

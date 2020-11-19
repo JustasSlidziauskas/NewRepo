@@ -1,27 +1,27 @@
-﻿using NUnit.Framework;
+﻿using System;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace VCSprojektas.Page
+namespace VCSproject
 {
     public class BasePage
     {
         protected static IWebDriver Driver;
 
-            public BasePage (IWebDriver webDriver)
+        public BasePage(IWebDriver webDriver)
         {
             Driver = webDriver;
         }
-         public void CloseBrowser()
+
+        public WebDriverWait GetWait(int seconds = 5)
+        {
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(seconds));
+            return wait;
+        }
+
+        public void CloseBrowser()
         {
             Driver.Quit();
         }
-
     }
 }

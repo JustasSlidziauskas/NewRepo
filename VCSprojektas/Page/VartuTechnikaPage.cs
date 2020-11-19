@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VCSproject;
 
 namespace VCSprojektas.Page
 {
@@ -48,14 +49,13 @@ namespace VCSprojektas.Page
             InsertWidth(width);
             InsertHeight(height);
             return this;
-
         }
+
         public VartuTechnikaPage checkAutomatikaCheckbox(bool shouldBeChecked)
         {
             if (shouldBeChecked != _autoCheckbox.Selected)
                 _autoCheckbox.Click();
             return this;
-
         }
 
         public VartuTechnikaPage checkMontavimoDarbai(bool shouldBeChecked)

@@ -1,58 +1,58 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VCSprojektas.Page;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using VCSproject.Page;
 
-namespace VCSprojektas.Test
+namespace VCSproject.Test
 {
-    public class SeleniumCheckBoxTest
+    public class CheckboxDemoTest
     {
-        private static IWebDriver _driver;
+        private static CheckboxDemoPage _checkboxDemoPage;
 
         [OneTimeSetUp]
         public static void SetUp()
         {
-            _driver = new ChromeDriver();
-            _driver.Navigate().GoToUrl("https://www.seleniumeasy.com/test/basic-checkbox-demo.html");
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            _driver.Manage().Window.Maximize();
-          
+            IWebDriver driver = new ChromeDriver();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Window.Maximize();
+            _checkboxDemoPage = new CheckboxDemoPage(driver);
         }
 
         [OneTimeTearDown]
         public static void TearDown()
         {
-            _driver.Quit();
+            _checkboxDemoPage.CloseBrowser();
         }
 
+        [Order(1)]
         [Test]
-        public void TestSeleniumInputFirstCechkBox()
+        public void TestSingleCheckbox()
         {
-            SeleniumCheckBoxPage page = new SeleniumCheckBoxPage(_driver);
-
-            page.ClickCheckBox();
-            page.CheckResult("checked");
+            _checkboxDemoPage.CheckSingleCheckbox()
+                .CheckResult();
         }
 
+        [Order(2)]
         [Test]
-        public void TestSeleniumMultiCechkBox()
+        public void TestCheckAllCheckboxes()
         {
-            SeleniumCheckBoxPage page = new SeleniumCheckBoxPage(_driver);
-
-            page.ClickMultipleCheckBox();
-            page.MultipleCheckBoxResult("Uncheck All");
+            _checkboxDemoPage.CheckAllCheckboxes()
+                .CheckButtonValue("Uncheck All");
         }
 
-
-
-
-
-
+        [Order(3)]
+        [Test]
+        public void TestUncheckAllCheckboxes()
+        {
+            _checkboxDemoPage.CheckAllCheckboxes()
+                .ClickButton()
+                .VerifyThatAllCheckboxesAreUnchecked();
+        }
 
     }
 }
