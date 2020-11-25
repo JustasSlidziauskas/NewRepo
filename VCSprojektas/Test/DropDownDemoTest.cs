@@ -8,66 +8,39 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using VCSproject.Page;
+using VCSprojektas.Drivers;
+using VCSprojektas.Test;
 
 namespace VCSproject.Test
-{
-    public class DropdownDemoTest
-    {
-        private static DropdownDemoPage _page;
+{ } 
+/*public class DropdownDemoTest : BaseTest
+  {
+     [Test]
+     public void TestDropdown()
+     {
+         _dropdownDemoPage.NavigateToDefaultPage()
+             .SelectFromDropdownByText("Friday")
+             .VerifyResult("Friday");
+     }
 
-        [OneTimeSetUp]
-        public static void SetUp()
-        {
-            IWebDriver driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Manage().Window.Maximize();
-            _page = new DropdownDemoPage(driver);
-        }
+     [TestCase("New Jersey", "California", TestName = "Pasirenkame 2 reiksmes ir patikriname pirma pasirinkima")]
+     [TestCase("Washington", "Ohio", "Texas", TestName = "Pasirenkame 3 reiksmes ir patikriname pirma pasirinkima")]
+     public void TestMultipleDropdown(params string[] selectedElements)
+     {
+         _dropdownDemoPage.NavigateToDefaultPage()
+             .SelectFromMultipleDropdownAndClickFirstButton(selectedElements.ToList())
+             .CheckFirstState(selectedElements[0]);
 
-        [OneTimeTearDown]
-        public static void TearDown()
-        {
-            _page.CloseBrowser();
-        }
-        [Order(1)]
-        [Test]
-        public void TestDropdown()
-        {
-            _page.SelectFromDropdownByText("Friday")
-                .VerifyResult("Friday");
-        }
-        [Order(2)]
-        [TestCase("New Jersey", "California", TestName = "Pasirenkame 2 valstijas ir patikriname first selected atsakyma")]
+     }
 
-        public void TestMultipleDropdownFirstSelect2(params string[] selectedElements)
-        {
-            _page.SelectFromMultipleDropdownByValue(selectedElements.ToList())
-                .ClickFirstSelectedButton()
-                .VerifyMultiDropDownFirstResult("New Jersey");
-        }
-        [Order(3)]
-        [TestCase("New Jersey", "California", TestName = "Pasirenkame 2 valstijas ir patikriname get all selected atsakyma")]
-        public void TestMultipleDropdownGetAllSelect2(params string[] selectedElements)
-        {
-            _page.SelectFromMultipleDropdownByValue(selectedElements.ToList())
-                .ClickAllSelectedButton()
-              .VerifyMultiDropDownMultitResult("New Jersey, California");
-        }
-        [Order(4)]
-        [TestCase("New Jersey", "California", "Ohio", TestName = "Pasirenkame 3 valstijas ir patikriname first all selected atsakyma")]
-        public void TestMultipleDropdownFirstSelect3(params string[] selectedElements)
-        {
-            _page.SelectFromMultipleDropdownByValue(selectedElements.ToList())
-                .ClickFirstSelectedButton()
-                .VerifyMultiDropDownFirstResult("New Jersey");
-        }
-        [Order(5)]
-        [TestCase("New Jersey", "California", "Ohio", "Texas", TestName = "Pasirenkame 4 valstijas ir patikriname get all selected atsakyma")]
-        public void TestMultipleDropdownGetAllSelect3(params string[] selectedElements)
-        {
-            _page.SelectFromMultipleDropdownByValue(selectedElements.ToList())
-                .ClickAllSelectedButton()
-              .VerifyMultiDropDownMultitResult("New Jersey,California,Ohio,Texas");
-        }
-    }
-}
+     [TestCase("New Jersey", "California", TestName = "Pasirenkame 2 reiksmes ir patikriname visus pasirinkimus")]
+     [TestCase("Washington", "Ohio", "Texas", "Florida", TestName = "Pasirenkame 4 reiksmes ir patikriname visus pasirinkimus")]
+     public void TestMultipleDropdownGetAll(params string[] selectedElements)
+     {
+         _dropdownDemoPage.NavigateToDefaultPage()
+             .SelectFromMultipleDropdownByValue(selectedElements.ToList())
+             .ClickGetAllButton()
+             .CheckListedStates(selectedElements.ToList());
+     }
+ }
+}*/

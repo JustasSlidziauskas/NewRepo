@@ -55,6 +55,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaigiamasisDarbas\Page\BaigiamasisDarbasDUKPage.cs" />
+    <Compile Include="BaigiamasisDarbas\Page\BaigiamasisDarbasPage.cs" />
+    <Compile Include="BaigiamasisDarbas\Page\BaigiamasisDarbasParduotuvesNuomaPage.cs" />
+    <Compile Include="BaigiamasisDarbas\Test\BaigiamasisDarbasDUKTest.cs" />
+    <Compile Include="BaigiamasisDarbas\Test\BaigiamasisDarbasParduotuvesNuomaTest.cs" />
+    <Compile Include="BaigiamasisDarbas\Test\BaigiamasisDarbasTest.cs" />
+    <Compile Include="Drivers\Browsers.cs" />
+    <Compile Include="Drivers\CustomDriver.cs" />
     <Compile Include="KlasėsIkiPagePatern\CheckBoxDemo.cs" />
     <Compile Include="KlasėsIkiPagePatern\Class1.cs" />
     <Compile Include="KlasėsIkiPagePatern\HM2.cs" />
@@ -65,13 +73,14 @@
     <Compile Include="Page\VartuTechnikaPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="KlasėsIkiPagePatern\SkirtingosNarsykles.cs" />
-    <Compile Include="KlasėsIkiPagePatern\TestWebDriver.cs" />
+    <Compile Include="Test\BaseTest.cs" />
     <Compile Include="Test\DropDownDemoTest.cs" />
     <Compile Include="Test\SeleniumCheckBoxTest.cs" />
     <Compile Include="Test\SeleniumInputTest.cs" />
     <Compile Include="Test\VartuTechnikaTest.cs" />
     <Compile Include="KlasėsIkiPagePatern\VartuTechnika.cs" />
     <Compile Include="KlasėsIkiPagePatern\VCS20201116.cs" />
+    <Compile Include="Tools\MyScreenshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="KlasėsIkiPagePatern\packages.config" />

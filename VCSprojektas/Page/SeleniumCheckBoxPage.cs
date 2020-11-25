@@ -11,72 +11,97 @@ using VCSprojektas.Page;
 
 namespace VCSproject.Page
 {
-    public class CheckboxDemoPage : BasePage
+    public class BasicCheckBoxPage : BasePage
     {
+
         private const string PageAddress = "https://www.seleniumeasy.com/test/basic-checkbox-demo.html";
-        private const string TextToCheck = "Success - Check box is checked";
-        private IWebElement SingleCheckbox => Driver.FindElement(By.Id("isAgeSelected"));
-        private IWebElement Text => Driver.FindElement(By.Id("txtAge"));
-        private IReadOnlyCollection<IWebElement> MultipleCheckboxList => Driver.FindElements(By.CssSelector(".cb1-element"));
-        private IWebElement Button => Driver.FindElement(By.Id("check1"));
 
-        public CheckboxDemoPage(IWebDriver webdriver) : base(webdriver)
-        {
-            Driver.Url = PageAddress;
-        }
+        private IWebElement _singleCheckBox => Driver.FindElement(By.Id("isAgeSelected"));
 
-        public CheckboxDemoPage CheckSingleCheckbox()
+        private IWebElement _singleCheckBoxMessage => Driver.FindElement(By.Id("txtAge"));
+
+        private const string SingleCheckBoxMessageText = "Success - Check box is checked";
+
+        private IReadOnlyCollection<IWebElement> _multipleCheckBoxes => Driver.FindElements(By.ClassName("cb1-element"));
+
+        private IWebElement _checkAllButton => Driver.FindElement(By.Id("check1"));
+
+
+        public BasicCheckBoxPage(IWebDriver webdriver) : base(webdriver)
+        { }
+
+        public BasicCheckBoxPage NavigateToPage()
         {
-            if (!SingleCheckbox.Selected)
-                SingleCheckbox.Click();
+            if (Driver.Url != PageAddress)
+                Driver.Url = PageAddress;
             return this;
         }
 
-        public CheckboxDemoPage CheckResult()
+        public BasicCheckBoxPage CheckSingleCheckBox()
         {
-            Assert.IsTrue(Text.Text.Equals(TextToCheck));
+            if (!_singleCheckBox.Selected)
+                _singleCheckBox.Click();
             return this;
         }
 
-        private void UncheckFirstBlockCheckbox()
+        public BasicCheckBoxPage UnCheckSingleCheckBox()
         {
-            if (SingleCheckbox.Selected)
-                SingleCheckbox.Click();
+            if (_singleCheckBox.Selected)
+                _singleCheckBox.Click();
+            return this;
         }
 
-        public CheckboxDemoPage CheckAllCheckboxes()
+        public BasicCheckBoxPage AssertSingleCheckBoxDemoSuccessMessage()
         {
-            UncheckFirstBlockCheckbox();
-            foreach (IWebElement element in MultipleCheckboxList)
+
+            Assert.AreEqual(SingleCheckBoxMessageText, _singleCheckBoxMessage.Text, "tekstas nesutampa!");
+
+            return this;
+        }
+
+        public BasicCheckBoxPage AssertSingleCheckBoxDemoSuccessMessageWithWait()
+        {
+            GetWait(2).Until(ExpectedConditions.TextToBePresentInElement(_singleCheckBoxMessage, SingleCheckBoxMessageText));
+            Assert.AreEqual(SingleCheckBoxMessageText, _singleCheckBoxMessage.Text, "tekstas nesutampa!");
+
+            return this;
+        }
+
+
+        public BasicCheckBoxPage CheckAllMultipleCheckBoxes()
+        {
+            foreach (IWebElement singleCheckbox in _multipleCheckBoxes)
             {
-                if (!element.Selected)
-                    element.Click();
+                if (!singleCheckbox.Selected)
+                    singleCheckbox.Click();
             }
             return this;
         }
 
-        public CheckboxDemoPage CheckButtonValue(string value)
+        public BasicCheckBoxPage AssertButtonName(string expectedName)
         {
-            GetWait(3).Until(ExpectedConditions.TextToBePresentInElementValue(Button, "Uncheck All"));
-            Assert.IsTrue(Button.GetAttribute("value").Equals(value), "Seconds are wrong");
+
+            GetWait().Until(ExpectedConditions.TextToBePresentInElementValue(_checkAllButton, expectedName));
+            Assert.AreEqual(expectedName, _checkAllButton.GetAttribute("value"), "Wrong button label");
             return this;
         }
 
-        public CheckboxDemoPage ClickButton()
+
+        public BasicCheckBoxPage ClickGroupButton()
         {
-            Button.Click();
+            _checkAllButton.Click();
             return this;
         }
 
-        public CheckboxDemoPage VerifyThatAllCheckboxesAreUnchecked()
+        public BasicCheckBoxPage AssertMultipleCheckBoxesUnchecked()
         {
-            foreach (IWebElement element in MultipleCheckboxList)
+            foreach (IWebElement singleCheckbox in _multipleCheckBoxes)
             {
-                Assert.False(element.Selected, "Checkbox is still checked");
-                Assert.IsTrue(!element.Selected, "Checkbox is still checked");
-                Assert.That(!element.Selected, "Checkbox is still checked");
+                Assert.False(singleCheckbox.Selected, "One of checkboxes is still checked!");
             }
+
             return this;
         }
+
     }
 }

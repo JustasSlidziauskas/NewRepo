@@ -15,24 +15,24 @@ namespace VCSproject.Page
     {
 
         private const string PageAddress = "https://www.seleniumeasy.com/test/basic-select-dropdown-demo.html";
-
         private const string ResultText = "Day selected :- ";
-        private const string FirstSelectedStateResultText = "First selected option is : ";
-
         private SelectElement DropDown => new SelectElement(Driver.FindElement(By.Id("select-demo")));
-
         private IWebElement ResultTextElement => Driver.FindElement(By.CssSelector(".selected-value"));
+        private IWebElement ResultTextAllSelectedElement => Driver.FindElement(By.CssSelector(".getall-selected"));
 
         private SelectElement MultiDropDown => new SelectElement(Driver.FindElement(By.Id("multi-select")));
 
         private IWebElement FirstSelectedButton => Driver.FindElement(By.Id("printMe"));
 
         private IWebElement GetAllSelectedButton => Driver.FindElement(By.Id("printAll"));
-        private IWebElement SelectedButtonResult => Driver.FindElement(By.CssSelector(".getall-selected"));
 
-        public DropdownDemoPage(IWebDriver webdriver) : base(webdriver)
+        public DropdownDemoPage(IWebDriver webdriver) : base(webdriver) { }
+
+        public DropdownDemoPage NavigateToDefaultPage()
         {
-            Driver.Url = PageAddress;
+            if (Driver.Url != PageAddress)
+                Driver.Url = PageAddress;
+            return this;
         }
 
         public DropdownDemoPage SelectFromDropdownByText(string text)
@@ -53,47 +53,72 @@ namespace VCSproject.Page
             return this;
         }
 
-        public DropdownDemoPage SelectFromMultipleDropdownByValue(List<string> listOfStates)
+        public DropdownDemoPage SelectFromMultipleDropdownAndClickFirstButton(List<string> listOfStates)
         {
+            MultiDropDown.DeselectAll();
             Actions action = new Actions(Driver);
-            action.KeyDown(Keys.Control);
-            foreach (IWebElement option in MultiDropDown.Options)
+            action.KeyDown(Keys.LeftControl);
+            foreach (string state in listOfStates)
             {
-                if (listOfStates.Contains(option.GetAttribute("value")))
+                foreach (IWebElement option in MultiDropDown.Options)
                 {
-                    action.Click(option);
+                    if (state.Equals(option.GetAttribute("value")))
+                    {
+                        action.Click(option);
+                        break;
+                    }
                 }
             }
-            action.KeyUp(Keys.Control);
+            action.KeyUp(Keys.LeftControl);
+            action.Build().Perform();
+            action.Click(FirstSelectedButton);
             action.Build().Perform();
             return this;
         }
 
-        public DropdownDemoPage ClickFirstSelectedButton()
+        public DropdownDemoPage ClickGetAllButton()
         {
-            FirstSelectedButton.Click();
-            return this;
-        }
-
-        public DropdownDemoPage ClickAllSelectedButton()
-        {   
             GetAllSelectedButton.Click();
             return this;
         }
 
-
-        public DropdownDemoPage VerifyMultiDropDownFirstResult(string firstSelectedState)
+        public DropdownDemoPage CheckListedStates(List<string> selectedElements)
         {
-            Assert.AreEqual("First selected option is : "+ firstSelectedState,SelectedButtonResult.Text, $"Result is wrong, not {firstSelectedState}");
+            string result = ResultTextAllSelectedElement.Text;
+            foreach (string selectedElement in selectedElements)
+            {
+                Assert.True(result.Contains(selectedElement),
+                    $"Should be {selectedElement}, but was {result}");
+            }
             return this;
         }
-        public DropdownDemoPage VerifyMultiDropDownMultitResult(string SelectedAllstates)
+
+        public DropdownDemoPage CheckFirstState(string selectedElement)
         {
-            Assert.AreEqual("Options selected are : " + SelectedAllstates, SelectedButtonResult.Text, $"Result is wrong, not {SelectedAllstates}");
+            string result = ResultTextAllSelectedElement.Text;
+            Assert.True(result.Contains(selectedElement),
+                $"{selectedElement} is missing. {result}");
             return this;
         }
 
+        public DropdownDemoPage SelectFromMultipleDropdownByValue(List<string> listOfStates)
+        {
+            MultiDropDown.DeselectAll();
+            foreach (IWebElement option in MultiDropDown.Options)
+                if (listOfStates.Contains(option.GetAttribute("value")))
+                {
+                    ClickMultipleBox(option);
+                }
+            return this;
+        }
 
-
+        private void ClickMultipleBox(IWebElement element)
+        {
+            Actions actions = new Actions(Driver);
+            actions.KeyDown(Keys.Control);
+            actions.Click(element);
+            actions.KeyUp(Keys.Control);
+            actions.Build().Perform();
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace VCSprojektas.Page
 {
     public class VartuTechnikaPage : BasePage
     {
+        //private const string pageAddress => "www.vartutechnika.lt";
 
         private static IWebDriver _driver;
 
@@ -28,8 +29,10 @@ namespace VCSprojektas.Page
 
         private IWebElement _resultBox => _driver.FindElement(By.CssSelector("#calc_result > div"));
 
+       // public static string PageAddress => pageAddress;
 
         public VartuTechnikaPage(IWebDriver webdriver) : base(webdriver) { }
+
       
         public VartuTechnikaPage InsertWidth(string width)
         {

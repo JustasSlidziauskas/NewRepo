@@ -7,52 +7,40 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using VCSproject.Page;
+using VCSprojektas.Test;
 
 namespace VCSproject.Test
-{
-    public class CheckboxDemoTest
+{ }
+   /* public class CheckboxDemoTest
     {
-        private static CheckboxDemoPage _checkboxDemoPage;
-
-        [OneTimeSetUp]
-        public static void SetUp()
+        class BasicCheckBoxTest : BaseTest
         {
-            IWebDriver driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Manage().Window.Maximize();
-            _checkboxDemoPage = new CheckboxDemoPage(driver);
-        }
 
-        [OneTimeTearDown]
-        public static void TearDown()
-        {
-            _checkboxDemoPage.CloseBrowser();
-        }
+            [Test]
+            public static void SingleCheckBoxTest()
+            {
+                _page.NavigateToPage()
+                    .CheckSingleCheckBox()
+                    .AssertSingleCheckBoxDemoSuccessMessage()
+                    .UnCheckSingleCheckBox();
+            }
 
-        [Order(1)]
-        [Test]
-        public void TestSingleCheckbox()
-        {
-            _checkboxDemoPage.CheckSingleCheckbox()
-                .CheckResult();
-        }
+            [Test]
+            public static void MultipleCheckBoxTest()
+            {
+                _page.NavigateToPage()
+                    .CheckAllMultipleCheckBoxes()
+                    .AssertButtonName("Uncheck All");
+            }
 
-        [Order(2)]
-        [Test]
-        public void TestCheckAllCheckboxes()
-        {
-            _checkboxDemoPage.CheckAllCheckboxes()
-                .CheckButtonValue("Uncheck All");
+            [Test]
+            public static void UncheckMultipleCheckBoxesTest()
+            {
+                _page.NavigateToPage()
+                    .CheckAllMultipleCheckBoxes()
+                    .ClickGroupButton()
+                    .AssertMultipleCheckBoxesUnchecked();
+            }
         }
-
-        [Order(3)]
-        [Test]
-        public void TestUncheckAllCheckboxes()
-        {
-            _checkboxDemoPage.CheckAllCheckboxes()
-                .ClickButton()
-                .VerifyThatAllCheckboxesAreUnchecked();
-        }
-
     }
-}
+}*/
